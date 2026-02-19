@@ -1,0 +1,10 @@
+id,name,price,currency,created_at,id_missing,price_missing,currency_missing,zero_price,negative_price,extreme_price,reason
+,Jacket,-200.0,SEK,,True,False,False,False,True,False,Negative price
+SKU-1005,,,,,False,True,True,False,False,False,Missing currency
+SKU-1006,Designer Coat,,SEK,2024-05-01,False,True,False,False,False,False,Missing price
+,Hat,,SEK,,True,True,False,False,False,False,Missing price
+SKU-1008,Gloves,120.0,,2024-06-20,False,False,True,False,False,False,Missing currency
+SKU-1015,Hoodie,-50.0,SEK,2024-04-15,False,False,False,False,True,False,Negative price
+SKU-1043,Cardigan,,SEK,2024-11-15,False,True,False,False,False,False,Missing price
+SKU-1052,Coat,,SEK,2025-01-10,False,True,False,False,False,False,Missing price
+SKU-1055,Scarf,300.0,,2025-02-05,False,False,True,False,False,False,Missing currency
