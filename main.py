@@ -1,16 +1,16 @@
 import pandas as pd
-import numpy as np
 
+
+# 1. EXTRACT (Read file)
 
 df = pd.read_csv("data/products.csv", sep=";")
 
-print(df.info())
-print(df.head())
+print("Raw data:")
+print(df)
 
 
-# -------------------------------------------------
+
 # 2. CLEAN STRING COLUMNS
-# -------------------------------------------------
 
 # Clean ID
 df["id"] = df["id"].str.strip().str.upper()
@@ -20,7 +20,6 @@ df["name"] = df["name"].str.strip().str.title()
 
 # Clean currency
 df["currency"] = df["currency"].str.strip().str.upper()
-
 
 
 
@@ -43,9 +42,8 @@ df["created_at"] = pd.to_datetime(
 
 
 
+# 4. FLAG MISSING VALUES
 
-
-# 4. FLAG PROBLEMS
 
 df["id_missing"] = df["id"].isna() | (df["id"] == "")
 df["price_missing"] = df["price"].isna()
@@ -56,9 +54,6 @@ df["extreme_price"] = df["price"] > 10000
 
 print("\nData with flags:")
 print(df)
-
-
-
 
 
 # 5. DEFINE REJECTION RULES
@@ -75,9 +70,7 @@ df_valid = df[~reject_condition].copy()
 
 
 
-
-
-# 6. ADD REJECTION REASONS (Teacher Style)
+# 6. ADDING REJECTION REASONS
 
 df_rejected["reason"] = ""
 
@@ -87,9 +80,7 @@ df_rejected.loc[df_rejected["currency_missing"], "reason"] = "Missing currency"
 df_rejected.loc[df_rejected["negative_price"], "reason"] = "Negative price"
 
 
-
-
-# 7. ANALYTICS SUMMARY (Required File)
+# 7. ANALYTICS SUMMARY
 
 analytics_summary = pd.DataFrame({
     "snittpris": [df_valid["price"].mean()],
@@ -101,7 +92,6 @@ analytics_summary = pd.DataFrame({
 analytics_summary.to_csv("outputs/analytics_summary.csv", index=False)
 
 
-
 # 8. PRICE ANALYSIS (BONUS)
 
 # Top 10 most expensive
@@ -109,10 +99,6 @@ top_10_expensive = df_valid.sort_values(
     by="price",
     ascending=False
 ).head(10)
-
-
-
-
 
 # Most deviating from mean
 mean_price = df_valid["price"].mean()
@@ -130,10 +116,26 @@ price_analysis.to_csv("outputs/price_analysis.csv", index=False)
 
 
 
+# 9. PRODUCT INSIGHTS
+
+most_expensive = df_valid.sort_values(
+    by="price",
+    ascending=False
+).head(1)
+
+cheapest = df_valid.sort_values(
+    by="price",
+    ascending=True
+).head(1)
+
+print("\nMost expensive product:")
+print(most_expensive)
+
+print("\nCheapest product:")
+print(cheapest)
 
 
-
-# 9. SAVE REJECTED (BONUS)
+# 10. SAVE REJECTED
 
 df_rejected.to_csv("outputs/rejected_products.csv", index=False)
 
@@ -144,4 +146,3 @@ print(df_valid)
 print("\nRejected rows:")
 print(df_rejected)
 
-print("\nETL Complete.")
